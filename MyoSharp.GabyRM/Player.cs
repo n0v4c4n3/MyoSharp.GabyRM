@@ -21,15 +21,17 @@ namespace MyoSharp.GabyRM
             audioFileReader = new AudioFileReader("test.mp3");
             waveOutDevice.Init(audioFileReader);
         }
-        public static void TogglePlay()
+        public static bool TogglePlay()
         {
             if (waveOutDevice.PlaybackState.Equals(PlaybackState.Playing))
             {
                 waveOutDevice.Pause();
+                return false;
             }
             else
             {
                 waveOutDevice.Play();
+                return true;
             }
         }
         public static void Stop()
@@ -48,9 +50,9 @@ namespace MyoSharp.GabyRM
             }
 
         }
-        public static void Volume(int vol)
+        public static void Volume(int pitch)
         {
-            int NewVolume = ((ushort.MaxValue / 10) * vol + 1);
+            int NewVolume = ((ushort.MaxValue / 10) * pitch + 1);
             uint NewVolumeAllChannels = (((uint)NewVolume & 0x0000ffff) | ((uint)NewVolume << 16));
             waveOutSetVolume(IntPtr.Zero, NewVolumeAllChannels);
         }
